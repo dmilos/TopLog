@@ -14,7 +14,7 @@
 
 ### Work flow:
 
-1. Isolate peace of code whee problem might be.
+1. Isolate peace of code where problem might be.
 
 ```c++
 double process( double a, double b, double c )
