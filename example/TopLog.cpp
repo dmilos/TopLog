@@ -21,7 +21,7 @@ int main( int argc, char *argv[] )
   std::string s="sssssssssssssssss";
   TOPLOG_VALUE(s);
 
-  cout << "Hit enter!" << endl;
+  cout << "Hit enter!"  << endl;
 
   cin.get();
   return EXIT_SUCCESS;

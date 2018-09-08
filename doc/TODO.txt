@@ -1,0 +1,3 @@
+- ProcessID
+- fixed space for ThreadID
+- Configure scope message

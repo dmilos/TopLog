@@ -4,92 +4,123 @@
 #include <iomanip>
 #include <string>
 #include <sstream>
+#include <thread>
 
-namespace TopLogger
+
+// Q: Load configuration from file?
+// A: NO. This is not Big Fancy Logger!
+
+// Configuration. 
+#define TOPLOG__LOG_PREFIX__DATETIME     "[" << TopLogNamespace::getCurrentTime() << "] "
+#define TOPLOG__LOG_PREFIX__THREADID      TopLogNamespace::getCurrentThreadID()
+#define TOPLOG__LOG_PREFIX__FILE          __FILE__
+#define TOPLOG__LOG_PREFIX__FUNCTION      __FUNCTION__
+#define TOPLOG__LOG_PREFIX__LINE          __LINE__
+
+#define TOPLOG__LOG_PREFIX_COMPLETE         TOPLOG__LOG_PREFIX__DATETIME          \
+                                        <<  TOPLOG__LOG_PREFIX__THREADID << " "\
+                                        <<  TOPLOG__LOG_PREFIX__FUNCTION << " - " << TOPLOG__LOG_PREFIX__LINE
+
+#define TOPLOG__FILE_FOLDER     ".\\"
+#define TOPLOG__FILE_PREFIX     "TopLog_"
+
+
+// Everything in this namespace are considered private
+namespace TopLogNamespace
  {
 
-  namespace _privateSpace
+  inline std::thread::id getCurrentThreadID()
    {
-
-    inline std::string getCurrentTime()
-     {
-      time_t t = time(0);
-      tm   n = *localtime( &t );
-
-      std::stringstream ss;
-      ss.str("");
-
-      ss <<                                      n.tm_year + 1900 << "-";
-      ss << std::setw(2) << std::setfill('0') << n.tm_mon  + 1    <<  "-";
-      ss << std::setw(2) << std::setfill('0') << n.tm_mday        <<  "_";
-      ss << std::setw(2) << std::setfill('0') << n.tm_hour        <<  "-";
-      ss << std::setw(2) << std::setfill('0') << n.tm_min             ;
-
-      return ss.str();
-     }
-
-    inline void function( std::string const& message )
-     {
-         static std::string dn = ".\\";
-         static std::string fn =   "TopLogger_" + TopLogger::_privateSpace::getCurrentTime();
-
-         std::ofstream ofs( dn + "\\" + fn + ".txt", std::ios_base::app );
-
-         ofs << message;
-         ofs.flush();
-     }
-
-   }
-
-   class Sink{};
-
-   inline TopLogger::Sink operator<<( TopLogger::Sink, std::string const& message )
-   {
-       TopLogger::_privateSpace::function( message );
-       return TopLogger::Sink{};
-   }
-
-   inline TopLogger::Sink operator<<( TopLogger::Sink, std::wstring const& message )
-   {
-       TopLogger::_privateSpace::function( std::string( message.begin(), message.end() ) );
-       return TopLogger::Sink{};
+    return std::this_thread::get_id();
    }
 
 
-   inline TopLogger::Sink operator<<( TopLogger::Sink, int const& i )
+  inline std::string getCurrentTime()
    {
-       TopLogger::_privateSpace::function( std::to_string( i ) );
-       return TopLogger::Sink{};
+    time_t t = time(0);
+    tm   n = *localtime( &t );
+
+    std::stringstream ss;
+
+    ss <<                                      n.tm_year + 1900 << "-";
+    ss << std::setw(2) << std::setfill('0') << n.tm_mon  + 1    <<  "-";
+    ss << std::setw(2) << std::setfill('0') << n.tm_mday        <<  "_";
+    ss << std::setw(2) << std::setfill('0') << n.tm_hour        <<  "-";
+    ss << std::setw(2) << std::setfill('0') << n.tm_min             ;
+
+    return ss.str();
    }
 
-   struct Scope
+  inline void function( std::string const& message )
    {
-    public:
-      Scope( std::string const& file, std::string const& func, int l )
+    static std::string dn = TOPLOG__FILE_FOLDER;
+    static std::string fn = TOPLOG__FILE_PREFIX + TopLogNamespace::getCurrentTime();
+
+    std::ofstream ofs( dn + "\\" + fn + ".txt", std::ios_base::app );
+
+    ofs << message;
+    ofs.flush();
+   }
+
+  class Sink{};
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::thread::id const& id )
+   {
+    std::stringstream ss;
+
+    ss <<  id;
+
+    TopLogNamespace::function( ss.str() );
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::string const& message )
+   {
+    TopLogNamespace::function( message );
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::wstring const& message )
+   {
+    TopLogNamespace::function( std::string( message.begin(), message.end() ) );
+    return TopLogNamespace::Sink{};
+   }
+
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, int const& i )
+   {
+    TopLogNamespace::function( std::to_string( i ) );
+    return TopLogNamespace::Sink{};
+   }
+
+  struct Scope
+  {
+   public:
+     Scope( std::string const& file, std::string const& func, int line, std::thread::id tid )
       {
-          m_file = file;
-          m_function = func;
-          m_line = l;
-          TopLogger::Sink{} << m_file << " - " << m_function << " - " << m_line << " - " << "ENTER" << "\n";
-      }
-      ~Scope()
-      {
-          TopLogger::Sink{} << m_file << " - " << m_function << " - " << m_line << " - " << "EXIT" << "\n";
+       m_file = file;
+       m_function = func;
+       m_line = line;
+       TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX__DATETIME << m_tid << " " << m_file << " - " << m_function << " - " << m_line << " - " << "ENTER" << "\n";
       }
 
-      std::string m_file;
-      std::string m_function;
-      int         m_line;
-   };
+     ~Scope()
+      {
+       TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX__DATETIME << m_tid << " " << m_file << " - " << m_function << " - " << m_line << " - " << "EXIT" << "\n";
+      }
+
+     std::string m_file;
+     std::string m_function;
+     int         m_line;
+     std::thread::id m_tid;
+  };
 
  }
 
-
-#define TOPLOG__PREFIX          " - " << __FUNCTION__ << " - " << __LINE__
-
-#define TOPLOG_SCOPE          TopLogger::Scope scope_logger_instance( "", __FUNCTION__,  __LINE__  )
-#define TOPLOG_POINT          TopLogger::Sink{} << TOPLOG__PREFIX << " - " << "POINT" << "\n"
-#define TOPLOG_VALUE(value)   TopLogger::Sink{} << TOPLOG__PREFIX << " - " << #value << " == " << value << "\n"
-#define TOPLOG_COMMENT(value) TopLogger::Sink{} << TOPLOG__PREFIX << " - " << value << "\n"
+// API
+#define TOPLOG_SCOPE          TopLogNamespace::Scope scope_logger_instance( "", __FUNCTION__,  __LINE__, TopLogNamespace::getCurrentThreadID() )
+#define TOPLOG_POINT          TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX_COMPLETE << " - " << "POINT" << "\n"
+#define TOPLOG_VALUE(value)   TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX_COMPLETE << " - " << #value << " == " << value << "\n"
+#define TOPLOG_COMMENT(value) TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX_COMPLETE << " - " << value << "\n"
 
 #endif

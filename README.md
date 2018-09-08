@@ -52,9 +52,9 @@ double process( double a, double b, double c )
     double s = 0;    TOPLOG_COMMENT("Initialization");
     s += a*a;        TOPLOG_VALUE(a);
     if( b < 0 )
-     {
+     { TOPLOG_SCOPE;
       BIG_FANCY_LOGGER_OR_SOMETHING("Second value is negative.")
-      b = -b;
+      b = -b; TOPLOG_VALUE(b);
      }
     s += sqr( b );   TOPLOG_VALUE(b);
     s + = sin( c );  TOPLOG_VALUE(c);
