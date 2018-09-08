@@ -53,7 +53,7 @@ double process( double a, double b, double c )
     s += a*a;        TOPLOG_VALUE(a);
     if( b < 0 )
      { TOPLOG_SCOPE;
-      BIG_FANCY_LOGGER_OR_SOMETHING("Second value is negative.")
+      BIG_FANCY_LOGGER_MESSAGE("Second value is negative.")
       b = -b; TOPLOG_VALUE(b);
      }
     s += sqr( b );   TOPLOG_VALUE(b);
