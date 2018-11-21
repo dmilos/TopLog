@@ -1,0 +1,5 @@
+Q: Where is functionality to load configuration from file?
+A: NO. This is not Big Fancy Logger!
+
+Q: Where is log level? Error, info, message.
+A: NO. This is not Big Fancy Logger!
