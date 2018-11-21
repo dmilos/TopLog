@@ -10,7 +10,7 @@
 // Q: Load configuration from file?
 // A: NO. This is not Big Fancy Logger!
 
-// Configuration. 
+// Configuration.
 #define TOPLOG__LOG_PREFIX__DATETIME     "[" << TopLogNamespace::getCurrentTime() << "] "
 #define TOPLOG__LOG_PREFIX__THREADID      TopLogNamespace::getCurrentThreadID()
 #define TOPLOG__LOG_PREFIX__FILE          __FILE__
@@ -96,11 +96,12 @@ namespace TopLogNamespace
   struct Scope
   {
    public:
-     Scope( std::string const& file, std::string const& func, int line, std::thread::id tid )
+     Scope( std::string const& file, std::string const& function, int line, std::thread::id tid )
+      :m_file( file )
+      ,m_function( function )
+      ,m_line( line )
+      ,m_tid( tid )
       {
-       m_file = file;
-       m_function = func;
-       m_line = line;
        TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX__DATETIME << m_tid << " " << m_file << " - " << m_function << " - " << m_line << " - " << "ENTER" << "\n";
       }
 

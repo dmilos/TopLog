@@ -15,7 +15,7 @@ int main( int argc, char *argv[] )
   TOPLOG_POINT;
   TOPLOG_VALUE(100);
   TOPLOG_VALUE(123.123);
-  int i;
+  int i=5;
   TOPLOG_VALUE(i);
 
   std::string s="sssssssssssssssss";
