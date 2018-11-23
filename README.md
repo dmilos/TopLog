@@ -3,7 +3,7 @@
 ### Description
  - When big and fancy loggers are not suitable for debugging there is TopLog.
 
-### Key features:
+### Key features
  - Header only
    - One file to include to start the fun
  - No third parties
@@ -12,7 +12,7 @@
    - No need to recompile or start some install process.
 
 
-### Work flow:
+### Work flow
 
 1. Isolate peace of code where problem might be.
 

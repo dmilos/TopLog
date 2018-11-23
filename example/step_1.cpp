@@ -14,7 +14,7 @@ double process( double a, double b, double c )
 
 int main( int argc, char *argv[] )
  {
-  std::cout << "Hello World" << std::endl;
+  std::cout << "Step 1" << std::endl;
 
   std::cout << process( 1, -2, 3 ) << std::endl;
 
