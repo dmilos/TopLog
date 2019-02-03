@@ -85,11 +85,11 @@ namespace TopLogNamespace
 
     if( true == TOPLOG__OUTPUT_FILE )
      {
-    std::ofstream ofs( dn + "\\" + fn + ".txt", std::ios_base::app );
+      std::ofstream ofs( dn + "\\" + fn + ".txt", std::ios_base::app );
 
-    ofs << message;
-    ofs.flush();
-   }
+      ofs << message;
+      ofs.flush();
+     }
 
     if( true == TOPLOG__OUTPUT_CONSOLE )
      {
@@ -147,9 +147,9 @@ namespace TopLogNamespace
        TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX__DATETIME << m_tid << " " << m_file << " - " << m_function << " - " << m_line << " - " << "EXIT" << "\n";
       }
 
-     std::string m_file;
-     std::string m_function;
-     int         m_line;
+     std::string     m_file;
+     std::string     m_function;
+     int             m_line;
      std::thread::id m_tid;
   };
 
@@ -164,5 +164,5 @@ namespace TopLogNamespace
 #define TOPLOG_VALUE(value)   TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX_COMPLETE << " - " << #value << " == " << value << "\n"
 #define TOPLOG_COMMENT(value) TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX_COMPLETE << " - " << value << "\n"
 
-#endif 
+#endif
 #endif

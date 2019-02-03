@@ -29,7 +29,6 @@ double process( double a, double b, double c )
 std::cout << process( 1, -2, 3 ) << std::endl;
 ```
 
-
 2. Populate with TopLog macros
 ```c++
 #include "TopLog.hpp"
