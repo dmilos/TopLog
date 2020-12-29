@@ -22,6 +22,7 @@
 #define TopLog_3f086ec6_c405_4a5b_b6c0_2edbc9f0a6b8
 
 #include <fstream>
+#include <iostream>
 #include <iomanip>
 #include <string>
 #include <sstream>
@@ -73,7 +74,8 @@ namespace TopLogNamespace
     ss << std::setw(2) << std::setfill('0') << n.tm_mon  + 1    <<  "-";
     ss << std::setw(2) << std::setfill('0') << n.tm_mday        <<  "_";
     ss << std::setw(2) << std::setfill('0') << n.tm_hour        <<  "-";
-    ss << std::setw(2) << std::setfill('0') << n.tm_min             ;
+    ss << std::setw(2) << std::setfill('0') << n.tm_min         <<  "-";
+    ss << std::setw(2) << std::setfill('0') << n.tm_sec             ;
 
     return ss.str();
    }
