@@ -126,9 +126,67 @@ namespace TopLogNamespace
    }
 
 
-  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, int const& i )
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::int8_t const& i )
    {
     TopLogNamespace::function( std::to_string( i ) );
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::int16_t const& i )
+   {
+    TopLogNamespace::function( std::to_string( i ) );
+    return TopLogNamespace::Sink{};
+   }
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::int32_t const& i )
+   {
+    TopLogNamespace::function( std::to_string( i ) );
+    return TopLogNamespace::Sink{};
+   }
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::int64_t const& i )
+   {
+    TopLogNamespace::function( std::to_string( i ) );
+    return TopLogNamespace::Sink{};
+   }
+
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::uint8_t const& i )
+   {
+    TopLogNamespace::function( std::to_string( i ) );
+    return TopLogNamespace::Sink{};
+   }
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::uint16_t const& i )
+   {
+    TopLogNamespace::function( std::to_string( i ) );
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::uint32_t const& i )
+   {
+    TopLogNamespace::function( std::to_string( i ) );
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::uint64_t const& i )
+   {
+    TopLogNamespace::function( std::to_string( i ) );
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, float const& d )
+   {
+    TopLogNamespace::function( std::to_string( d ) );
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, double const& d )
+   {
+    TopLogNamespace::function( std::to_string( d ) );
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, long double const& dd )
+   {
+    TopLogNamespace::function( std::to_string( dd ) );
     return TopLogNamespace::Sink{};
    }
 
