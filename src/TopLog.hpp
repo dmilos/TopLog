@@ -27,6 +27,7 @@
 #include <string>
 #include <sstream>
 #include <thread>
+#include <cstring>
 
 
 // {{{ Begin of Configuration.
@@ -36,13 +37,15 @@
 
 #define TOPLOG__LOG_PREFIX__DATETIME     "[" << TopLogNamespace::getCurrentTime() << "] "
 #define TOPLOG__LOG_PREFIX__THREADID      TopLogNamespace::getCurrentThreadID()
-#define TOPLOG__LOG_PREFIX__FILE          __FILE__
+#define TOPLOG__LOG_PREFIX__FILE_LONG          __FILE__
+#define TOPLOG__LOG_PREFIX__FILE_SHORT      (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #define TOPLOG__LOG_PREFIX__FUNCTION      __FUNCTION__
 #define TOPLOG__LOG_PREFIX__LINE          __LINE__
 
 #define TOPLOG__LOG_PREFIX_COMPLETE         TOPLOG__LOG_PREFIX__DATETIME          \
                                         <<  TOPLOG__LOG_PREFIX__THREADID << " "\
-                                        <<  TOPLOG__LOG_PREFIX__FUNCTION << " - " << TOPLOG__LOG_PREFIX__LINE
+                                        <<  TOPLOG__LOG_PREFIX__FILE_SHORT << "(" << TOPLOG__LOG_PREFIX__LINE << "):" \
+                                        <<  TOPLOG__LOG_PREFIX__FUNCTION << " - "
 
 #define TOPLOG__FILE_FOLDER     ".\\"
 #define TOPLOG__FILE_PREFIX     "TopLog_"
@@ -63,10 +66,14 @@ namespace TopLogNamespace
    {
     time_t t = time(0);
 
+#ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable:4996 )
+#endif
     tm   n = *localtime( &t );
+#ifdef _MSC_VER
 #pragma warning( pop )
+#endif
 
     std::stringstream ss;
 
@@ -187,6 +194,29 @@ namespace TopLogNamespace
   inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, long double const& dd )
    {
     TopLogNamespace::function( std::to_string( dd ) );
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, char const* s )
+   {
+    if( nullptr != s )
+     {
+      TopLogNamespace::function( std::string( s ) );
+     }
+     else
+     {
+      TopLogNamespace::function( std::string( "TopLog: Supplied char pointer is nullptr!" ) );
+     }
+    return TopLogNamespace::Sink{};
+   }
+
+  inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, void const* p )
+   {
+    std::stringstream ss;
+
+    ss <<  p;
+
+    TopLogNamespace::function( ss.str() );
     return TopLogNamespace::Sink{};
    }
 

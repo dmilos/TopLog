@@ -23,9 +23,14 @@ int main( int argc, char *argv[] )
   std::int32_t i32=-2;
   std::int64_t i64=-3;
 
-   double d = 1.1;
-   float f = 2.2;
-   long double dd = 3.3;
+  double d = 1.1;
+  float f = 2.2f;
+  long double dd = 3.3;
+  size_t sz = 123;
+  
+
+  void * pv = nullptr;
+  char * pc = nullptr;
 
   TOPLOG_SCOPE;
   TOPLOG_POINT;
@@ -47,6 +52,15 @@ int main( int argc, char *argv[] )
   TOPLOG_VALUE(d);
   TOPLOG_VALUE(f);
   TOPLOG_VALUE(dd);
+
+  TOPLOG_VALUE(sz);
+  TOPLOG_VALUE((size_t)-1);
+
+  TOPLOG_VALUE(sizeof(size_t));
+  TOPLOG_VALUE(sizeof(void*));
+  TOPLOG_VALUE(pv);
+  pv = &i; TOPLOG_VALUE(pv);
+  TOPLOG_VALUE(pc);
 
   std::string s="sssssssssssssssss";
   TOPLOG_VALUE(s);
