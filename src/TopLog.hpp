@@ -38,7 +38,7 @@
 #define TOPLOG__LOG_PREFIX__DATETIME     "[" << TopLogNamespace::getCurrentTime() << "] "
 #define TOPLOG__LOG_PREFIX__THREADID      TopLogNamespace::getCurrentThreadID()
 #define TOPLOG__LOG_PREFIX__FILE_LONG          __FILE__
-#define TOPLOG__LOG_PREFIX__FILE_SHORT      (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
+#define TOPLOG__LOG_PREFIX__FILE_SHORT      (strrchr(__FILE__, TOPLOG__FOLDER_SEPARATOR) ? strrchr(__FILE__, TOPLOG__FOLDER_SEPARATOR) + 1 : __FILE__)
 #define TOPLOG__LOG_PREFIX__FUNCTION      __FUNCTION__
 #define TOPLOG__LOG_PREFIX__LINE          __LINE__
 
@@ -64,6 +64,13 @@
 // End of configuration }}}
 
 // Everything in this namespace are considered as private
+#if defined( _MSC_BUILD )
+#define TOPLOG__FOLDER_SEPARATOR     '\\'
+#endif
+
+#if defined(__GNUC__) || defined(__GNUG__)
+#define TOPLOG__FOLDER_SEPARATOR     '/'
+#endif
 namespace TopLogNamespace
  {
 
