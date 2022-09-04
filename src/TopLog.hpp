@@ -47,7 +47,18 @@
                                         <<  TOPLOG__LOG_PREFIX__FILE_SHORT << "(" << TOPLOG__LOG_PREFIX__LINE << "):" \
                                         <<  TOPLOG__LOG_PREFIX__FUNCTION << " - "
 
+
+#if defined( _MSC_BUILD )
+// Must include trailing backslash
 #define TOPLOG__FILE_FOLDER     ".\\"
+#endif
+
+#if defined(__GNUC__) || defined(__GNUG__)
+// Must include trailing slash
+#define TOPLOG__FILE_FOLDER     "./"
+#endif
+
+
 #define TOPLOG__FILE_PREFIX     "TopLog_"
 
 // End of configuration }}}
@@ -94,7 +105,9 @@ namespace TopLogNamespace
 
     if( true == TOPLOG__OUTPUT_FILE )
      {
-      std::ofstream ofs( dn + "\\" + fn + ".txt", std::ios_base::app );
+      std::string name = dn + fn + ".txt";
+
+      std::ofstream ofs( name, std::ios_base::app );
 
       ofs << message;
       ofs.flush();
