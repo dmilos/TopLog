@@ -51,6 +51,9 @@
 #if defined( _MSC_BUILD )
 // Must include trailing backslash
 #define TOPLOG__FILE_FOLDER     ".\\"
+
+#pragma warning ( push )
+#pragma warning ( disable: 4244 )
 #endif
 
 #if defined(__GNUC__) || defined(__GNUG__)
@@ -264,6 +267,11 @@ namespace TopLogNamespace
   };
 
  }
+
+#if defined( _MSC_VER )
+#pragma warning ( pop )
+#endif
+
 
 // API
 
