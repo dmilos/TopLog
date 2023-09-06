@@ -151,10 +151,12 @@ namespace TopLogNamespace
 
   inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::wstring const& message )
    {
+#pragma warning( push )
+#pragma warning( disable: 4244 )
     TopLogNamespace::function( std::string( message.begin(), message.end() ) );
+#pragma warning( pop )
     return TopLogNamespace::Sink{};
    }
-
 
   inline TopLogNamespace::Sink operator<<( TopLogNamespace::Sink, std::int8_t const& i )
    {
@@ -268,7 +270,7 @@ namespace TopLogNamespace
 
  }
 
-#if defined( _MSC_VER )
+#if defined( _MSC_BUILD )
 #pragma warning ( pop )
 #endif
 
