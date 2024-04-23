@@ -31,9 +31,13 @@
 
 
 // {{{ Begin of Configuration.
-// Edit manually.
+#if !defined( TOPLOG__OUTPUT_FILE )
 #define TOPLOG__OUTPUT_FILE     true
+#endif
+
+#if !defined( TOPLOG__OUTPUT_CONSOLE )
 #define TOPLOG__OUTPUT_CONSOLE  false
+#endif
 
 #define TOPLOG__LOG_PREFIX__DATETIME     "[" << TopLogNamespace::getCurrentTime() << "] "
 #define TOPLOG__LOG_PREFIX__THREADID      TopLogNamespace::getCurrentThreadID()
