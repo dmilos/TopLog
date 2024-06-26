@@ -28,6 +28,7 @@
 #include <sstream>
 #include <thread>
 #include <cstring>
+#include <mutex>
 
 
 // {{{ Begin of Configuration.
@@ -116,6 +117,9 @@ namespace TopLogNamespace
    {
     static std::string dn = TOPLOG__FILE_FOLDER;
     static std::string fn = TOPLOG__FILE_PREFIX + TopLogNamespace::getCurrentTime();
+    static mutex  s_lock;
+
+    std::lock_guard locker( s_lock );
 
     if( true == TOPLOG__OUTPUT_FILE )
      {
@@ -132,7 +136,6 @@ namespace TopLogNamespace
       std::cout  << message;
       std::cout.flush();
      }
-
    }
 
   class Sink{};
@@ -283,7 +286,7 @@ namespace TopLogNamespace
 
 #if 1
 
-#define TOPLOG_SCOPE          TopLogNamespace::Scope scope_logger_instance( "", __FUNCTION__,  __LINE__, TopLogNamespace::getCurrentThreadID() )
+#define TOPLOG_SCOPE          TopLogNamespace::Scope scope_logger_instance( TOPLOG__LOG_PREFIX__FILE_SHORT, __FUNCTION__, __LINE__, TopLogNamespace::getCurrentThreadID() )
 #define TOPLOG_POINT          TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX_COMPLETE << " - " << "POINT" << "\n"
 #define TOPLOG_VALUE(value)   TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX_COMPLETE << " - " << #value << " == " << value << "\n"
 #define TOPLOG_COMMENT(value) TopLogNamespace::Sink{} << TOPLOG__LOG_PREFIX_COMPLETE << " - " << value << "\n"
