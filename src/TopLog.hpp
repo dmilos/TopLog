@@ -117,7 +117,7 @@ namespace TopLogNamespace
    {
     static std::string dn = TOPLOG__FILE_FOLDER;
     static std::string fn = TOPLOG__FILE_PREFIX + TopLogNamespace::getCurrentTime();
-    static mutex  s_lock;
+    static std::mutex  s_lock;
 
     std::lock_guard locker( s_lock );
 
