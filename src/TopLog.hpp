@@ -119,7 +119,7 @@ namespace TopLogNamespace
     static std::string fn = TOPLOG__FILE_PREFIX + TopLogNamespace::getCurrentTime();
     static std::mutex  s_lock;
 
-    std::lock_guard locker( s_lock );
+    std::lock_guard<std::mutex> locker( s_lock );
 
     if( true == TOPLOG__OUTPUT_FILE )
      {
